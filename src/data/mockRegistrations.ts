@@ -1,0 +1,58 @@
+import type { RegisteredUser } from "@/types"
+import { CHAMBERS } from "@/data/chambers"
+
+// Sample registrations shown alongside the live session entry on the dashboard.
+export const MOCK_REGISTRATIONS: RegisteredUser[] = [
+    {
+        fullName: "Sarah Chen",
+        department: "Internal Audit",
+        tid: "T0011234",
+        contributionType: "team",
+        teamName: "The Cipher Squad",
+        chamber: "A",
+        ideaName: "AuditLens AI",
+        problemStatement: CHAMBERS.A.problem,
+        pptFileName: "auditlens-ai-deck.pptx",
+        aiTool: "Azure OpenAI",
+        status: "Submitted",
+    },
+    {
+        fullName: "Marcus Webb",
+        department: "Field Operations",
+        tid: "T0022981",
+        contributionType: "team",
+        teamName: "Predictive Pioneers",
+        chamber: "B",
+        ideaName: "SentinelPredict",
+        problemStatement: CHAMBERS.B.problem,
+        pptFileName: "sentinelpredict.pptx",
+        aiTool: "Claude",
+        status: "Submitted",
+    },
+    {
+        fullName: "Priya Nair",
+        department: "People & Culture",
+        tid: "T0033456",
+        contributionType: "individual",
+        teamName: "",
+        chamber: "C",
+        ideaName: "OnboardIQ",
+        problemStatement: CHAMBERS.C.problem,
+        pptFileName: "onboardiq-final.pdf",
+        aiTool: "GitHub Copilot",
+        status: "Submitted",
+    },
+    {
+        fullName: "Diego Alvarez",
+        department: "Technology & Innovation",
+        tid: "T0044120",
+        contributionType: "team",
+        teamName: "Vault Breakers",
+        chamber: "A",
+        ideaName: "ComplianceGPT",
+        problemStatement: CHAMBERS.A.problem,
+        pptFileName: "—",
+        aiTool: "—",
+        status: "Registered",
+    },
+]

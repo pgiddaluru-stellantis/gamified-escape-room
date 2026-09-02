@@ -1,0 +1,10 @@
+{
+  "description": "Engage employees in a gamified hackathon experience with immersive mystery challenges, team collaboration, and progress tracking in a dark-themed portal.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

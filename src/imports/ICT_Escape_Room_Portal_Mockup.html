@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICT Escape Room Hackathon | Interactive Portal Mockup</title>
+    <style>
+        :root {
+            --bg: #05090d;
+            --panel: #0b1218e8;
+            --ink: #f5f7f8;
+            --muted: #aebbc3;
+            --cyan: #00f5ff;
+            --gold: #e0a842;
+            --purple: #b95dff;
+            --line: #21313b;
+            --ok: #5cf2a5;
+            --danger: #ff6b6b
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            color: var(--ink);
+            font-family: Inter, Segoe UI, Arial, sans-serif;
+            background: radial-gradient(circle at 75% 18%, #18313c 0, #071016 28%, #030608 65%);
+            min-height: 100vh
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .32;
+            background-image: linear-gradient(#ffffff08 1px, transparent 1px), linear-gradient(90deg, #ffffff08 1px, transparent 1px);
+            background-size: 32px 32px;
+            mask-image: linear-gradient(to bottom, #000, transparent 85%)
+        }
+
+        a {
+            color: inherit
+        }
+
+        .shell {
+            width: min(1180px, 94vw);
+            margin: auto
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #05090de8;
+            border-bottom: 1px solid var(--line);
+            backdrop-filter: blur(12px)
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            min-height: 70px;
+            gap: 18px
+        }
+
+        .brand {
+            margin-right: auto;
+            font-weight: 900;
+            letter-spacing: .05em
+        }
+
+        .brand span {
+            color: var(--cyan)
+        }
+
+        .navlinks {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap
+        }
+
+        .nav button,
+        .btn {
+            border: 1px solid var(--line);
+            background: #0c151b;
+            color: var(--ink);
+            padding: 10px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700
+        }
+
+        .nav button:hover,
+        .nav button.active,
+        .btn:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 18px #00f5ff2b
+        }
+
+        .edit-toggle.on {
+            border-color: var(--gold);
+            color: var(--gold)
+        }
+
+        main {
+            padding: 34px 0 64px
+        }
+
+        .page {
+            display: none;
+            animation: fade .35s ease
+        }
+
+        .page.active {
+            display: block
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(8px)
+            }
+        }
+
+        .hero {
+            min-height: 470px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            padding: clamp(28px, 6vw, 72px);
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            align-content: center;
+            background: linear-gradient(90deg, #05090ef5 0 44%, #051018bf), radial-gradient(circle at 80% 52%, #00f5ff32 0 2%, transparent 18%), linear-gradient(135deg, #101a20, #030608)
+        }
+
+        .hero:after {
+            content: "";
+            position: absolute;
+            right: 11%;
+            top: 15%;
+            width: 230px;
+            height: 320px;
+            border: 2px solid #7c5c2d;
+            border-radius: 8px 8px 52% 52%;
+            box-shadow: inset 0 0 60px #000, 0 0 50px #00f5ff1c;
+            background: radial-gradient(circle at 50% 45%, #00f5ff 0 7px, #00f5ff33 8px 20px, transparent 21px), linear-gradient(90deg, transparent 48%, #20313b 49% 51%, transparent 52%)
+        }
+
+        .eyebrow {
+            color: var(--cyan);
+            font-weight: 900;
+            letter-spacing: .18em;
+            text-transform: uppercase
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 78px);
+            line-height: .94;
+            max-width: 700px;
+            margin: 14px 0;
+            text-transform: uppercase
+        }
+
+        .hero p {
+            max-width: 650px;
+            color: var(--muted);
+            font-size: 18px;
+            line-height: 1.6
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px
+        }
+
+        .btn.primary {
+            background: var(--cyan);
+            border-color: var(--cyan);
+            color: #001014
+        }
+
+        .btn.gold {
+            border-color: var(--gold);
+            color: var(--gold)
+        }
+
+        .section {
+            margin-top: 28px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: var(--panel);
+            padding: 26px
+        }
+
+        .section h2 {
+            font-size: 28px;
+            margin: 0 0 8px
+        }
+
+        .sub {
+            color: var(--muted);
+            margin: 0 0 20px;
+            line-height: 1.55
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px
+        }
+
+        .card {
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: #081117;
+            padding: 20px;
+            position: relative
+        }
+
+        .card h3 {
+            margin: 7px 0
+        }
+
+        .card p,
+        .card li {
+            color: var(--muted);
+            line-height: 1.5
+        }
+
+        .tag {
+            display: inline-block;
+            border: 1px solid #28515d;
+            color: var(--cyan);
+            border-radius: 999px;
+            padding: 5px 9px;
+            font-size: 12px;
+            font-weight: 800
+        }
+
+        .mission-card {
+            cursor: pointer;
+            min-height: 210px
+        }
+
+        .mission-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--cyan);
+            transition: .2s
+        }
+
+        .mission-card .key {
+            position: absolute;
+            right: 16px;
+            bottom: 10px;
+            font-size: 54px;
+            color: #00f5ff22
+        }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px
+        }
+
+        .step {
+            padding: 16px;
+            border-top: 3px solid var(--cyan);
+            background: #071016;
+            border-radius: 0 0 10px 10px
+        }
+
+        .step strong {
+            display: block;
+            margin-bottom: 7px
+        }
+
+        .step small {
+            color: var(--muted)
+        }
+
+        .progresswrap {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: center
+        }
+
+        .track {
+            height: 12px;
+            border-radius: 99px;
+            background: #16232a;
+            overflow: hidden
+        }
+
+        .fill {
+            height: 100%;
+            width: 20%;
+            background: linear-gradient(90deg, var(--cyan), var(--purple));
+            transition: .4s
+        }
+
+        .status {
+            color: var(--cyan);
+            font-weight: 800
+        }
+
+        .chamber-hero {
+            padding: 30px;
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            background: linear-gradient(110deg, #0a141be8, #130d09d9), radial-gradient(circle at 85% 35%, #e0a84232, transparent 20%)
+        }
+
+        .chamber-hero h1 {
+            font-size: clamp(34px, 5vw, 55px);
+            margin: 9px 0
+        }
+
+        .twocol {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 18px
+        }
+
+        .resource {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            padding: 13px 0
+        }
+
+        .resource:last-child {
+            border: 0
+        }
+
+        .placeholder {
+            border: 1px dashed #35505d;
+            border-radius: 10px;
+            padding: 18px;
+            color: #8da1aa;
+            background: #071016
+        }
+
+        .clues {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px
+        }
+
+        .clue {
+            padding: 16px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #081117
+        }
+
+        .clue.used {
+            opacity: .45
+        }
+
+        .clue button {
+            width: 100%;
+            margin-top: 10px
+        }
+
+        .vault {
+            border-color: var(--gold);
+            background: linear-gradient(130deg, #100e08, #081117)
+        }
+
+        .footer {
+            color: #768993;
+            text-align: center;
+            padding: 30px 12px;
+            border-top: 1px solid var(--line)
+        }
+
+        [contenteditable="true"] {
+            outline: 1px dashed var(--gold);
+            outline-offset: 4px;
+            border-radius: 3px
+        }
+
+        .edit-note {
+            display: none;
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            background: #1b1305;
+            border: 1px solid var(--gold);
+            color: #ffe4a7;
+            padding: 12px 15px;
+            border-radius: 9px;
+            z-index: 30
+        }
+
+        .edit-note.show {
+            display: block
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: #000b;
+            z-index: 40;
+            display: none;
+            place-items: center;
+            padding: 20px
+        }
+
+        .modal.open {
+            display: grid
+        }
+
+        .dialog {
+            width: min(540px, 100%);
+            background: #0a1319;
+            border: 1px solid var(--cyan);
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 0 60px #00f5ff20
+        }
+
+        .dialog input,
+        .dialog textarea,
+        .dialog select {
+            width: 100%;
+            margin: 5px 0 13px;
+            padding: 11px;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #05090d;
+            color: white
+        }
+
+        .dialog textarea {
+            min-height: 100px
+        }
+
+        .dialog .row {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 25px;
+            transform: translateX(-50%);
+            background: #10231b;
+            border: 1px solid var(--ok);
+            padding: 12px 18px;
+            border-radius: 8px;
+            display: none;
+            z-index: 50
+        }
+
+        .toast.show {
+            display: block
+        }
+
+        @media(max-width:850px) {
+
+            .grid,
+            .timeline,
+            .clues {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .twocol {
+                grid-template-columns: 1fr
+            }
+
+            .hero:after {
+                opacity: .22
+            }
+
+            .nav {
+                align-items: flex-start;
+                padding: 12px 0
+            }
+
+            .navlinks {
+                justify-content: flex-end
+            }
+
+            .hero h1 {
+                font-size: 48px
+            }
+        }
+
+        @media(max-width:560px) {
+
+            .grid,
+            .timeline,
+            .clues {
+                grid-template-columns: 1fr
+            }
+
+            .brand {
+                width: 100%
+            }
+
+            .nav {
+                flex-wrap: wrap
+            }
+
+            .navlinks {
+                justify-content: flex-start
+            }
+
+            .hero {
+                padding: 28px
+            }
+
+            .hero h1 {
+                font-size: 39px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="topbar">
+        <div class="shell nav">
+            <div class="brand">ICT <span>ESCAPE ROOM</span></div>
+            <div class="navlinks"><button data-page="home" class="active">Mission Control</button><button
+                    data-page="chamber-a">Chamber A</button><button data-page="chamber-b">Chamber B</button><button
+                    data-page="chamber-c">Chamber C</button></div><button id="editBtn" class="edit-toggle">Edit
+                mode</button>
+        </div>
+    </header>
+    <main class="shell">
+        <section id="home" class="page active">
+            <div class="hero">
+                <div class="eyebrow">Unlock the future with AI</div>
+                <h1 contenteditable="false">ICT Escape Room Hackathon</h1>
+                <p contenteditable="false">Three critical missions are preventing the organization from moving forward.
+                    Select and complete one mission to unlock the Innovation Vault and gain access to the Showcase
+                    Escape Event.</p>
+                <div class="actions"><button class="btn primary" onclick="scrollToId('missions')">Choose a
+                        mission</button><button class="btn gold" onclick="scrollToId('timeline')">View timeline</button>
+                </div>
+            </div>
+            <section class="section">
+                <h2 contenteditable="false">Room 0: Mission Control</h2>
+                <p class="sub" contenteditable="false">Your starting point for the keynote, rules, timeline, FAQs, AI
+                    tool guide and mission explanation.</p>
+                <div class="grid">
+                    <div class="card"><span class="tag">START HERE</span>
+                        <h3 contenteditable="false">Mission briefing</h3>
+                        <p contenteditable="false">Review the challenge structure and decide which mission your team
+                            will enter.</p>
+                    </div>
+                    <div class="card"><span class="tag">GUIDANCE</span>
+                        <h3 contenteditable="false">Rules & FAQs</h3>
+                        <p contenteditable="false">Place participation rules, frequently asked questions and AI tool
+                            guidance here.</p>
+                    </div>
+                    <div class="card"><span class="tag">SUPPORT</span>
+                        <h3 contenteditable="false">Meet the Clue Masters</h3>
+                        <p contenteditable="false">Find office hours, mission walkthroughs and the route for requesting
+                            a clue.</p>
+                    </div>
+                </div>
+            </section>
+            <section id="missions" class="section">
+                <h2>Select your mission chamber</h2>
+                <p class="sub">Each chamber has a problem statement, datasets, supporting documents and dedicated Clue
+                    Master support.</p>
+                <div class="grid">
+                    <article class="card mission-card" onclick="go('chamber-a')"><span class="tag">USE CASE #1</span>
+                        <h3 contenteditable="false">Mission Chamber A</h3>
+                        <p contenteditable="false">Add the first use case title and a short mission teaser here.</p>
+                        <span class="key">⌕</span>
+                    </article>
+                    <article class="card mission-card" onclick="go('chamber-b')"><span class="tag">USE CASE #2</span>
+                        <h3 contenteditable="false">Mission Chamber B</h3>
+                        <p contenteditable="false">Add the second use case title and a short mission teaser here.</p>
+                        <span class="key">⌕</span>
+                    </article>
+                    <article class="card mission-card" onclick="go('chamber-c')"><span class="tag">USE CASE #3</span>
+                        <h3 contenteditable="false">Mission Chamber C</h3>
+                        <p contenteditable="false">Add the third use case title and a short mission teaser here.</p>
+                        <span class="key">⌕</span>
+                    </article>
+                </div>
+            </section>
+            <section id="timeline" class="section">
+                <h2>Progress through the week</h2>
+                <p class="sub">The portal can help teams see the current phase and mark progress.</p>
+                <div class="timeline">
+                    <div class="step"><strong>Oct 5 · Mission Briefing</strong><small>Meet Clue Masters, review
+                            resources and begin the mission.</small></div>
+                    <div class="step"><strong>Oct 6 · Discovery Day</strong><small>Investigate AI-powered solutions and
+                            define the approach.</small></div>
+                    <div class="step"><strong>Oct 7 · Build Day</strong><small>Experiment, collaborate, test and
+                            progress to prototype.</small></div>
+                    <div class="step"><strong>Oct 8 · Innovation Vault</strong><small>Finalize the solution and upload
+                            deliverables.</small></div>
+                    <div class="step"><strong>Oct 9 · Grand Escape</strong><small>Present to judges and peers at the
+                            final showcase.</small></div>
+                </div>
+            </section>
+            <section class="section vault">
+                <h2>Innovation Vault</h2>
+                <p class="sub">The final room. Teams submit their presentation, demo video, value statement and the AI
+                    tool used.</p><button class="btn gold" onclick="openModal('vaultModal')">Open submission
+                    mockup</button>
+            </section>
+        </section>
+
+        <section id="chamber-a" class="page"></section>
+        <section id="chamber-b" class="page"></section>
+        <section id="chamber-c" class="page"></section>
+    </main>
+    <footer class="footer">ICT Escape Room Hackathon · Interactive portal</footer>
+    <div class="edit-note" id="editNote">Edit mode is ON. Click text to revise it. Changes save in this browser.</div>
+    <div class="toast" id="toast">Saved in this browser</div>
+    <div class="modal" id="clueModal">
+        <div class="dialog">
+            <h2>Request a clue</h2><label>Team name<input id="teamName"
+                    placeholder="Enter team name"></label><label>Clue type<select>
+                    <option>Hint Card</option>
+                    <option>AI Prompt Suggestion</option>
+                    <option>Additional Context</option>
+                </select></label><label>What are you stuck on?<textarea
+                    placeholder="Describe the blocker without sharing sensitive information"></textarea></label>
+            <div class="row"><button class="btn" onclick="closeModal('clueModal')">Cancel</button><button
+                    class="btn primary" onclick="mockSubmit('Clue request captured in mockup')">Send request</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="vaultModal">
+        <div class="dialog">
+            <h2>Innovation Vault submission</h2><label>Team name<input
+                    placeholder="Enter team name"></label><label>Presentation<input type="file"></label><label>Demo
+                video<input type="file"></label><label>Value statement<textarea
+                    placeholder="Describe the value created"></textarea></label><label>AI tool used<input
+                    placeholder="Enter tool name"></label>
+            <div class="row"><button class="btn" onclick="closeModal('vaultModal')">Cancel</button><button
+                    class="btn gold" onclick="mockSubmit('Submission captured in mockup')">Submit to vault</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const chamberData = [['a', 'A', '1'], ['b', 'B', '2'], ['c', 'C', '3']];
+        function chamberTemplate(letter, label, num) {
+            return `<div class="chamber-hero"><div class="eyebrow">Use Case #${num}</div><h1 contenteditable="false">Room ${num}: Mission Chamber ${label}</h1><p class="sub" contenteditable="false">Replace this text with the mission title, context and expected participant outcome.</p><div class="actions"><button class="btn primary" onclick="scrollToId('problem-${letter}')">Enter mission</button><button class="btn" onclick="go('home')">Back to Mission Control</button></div></div>
+<section class="section" id="problem-${letter}"><div class="twocol"><div><h2 contenteditable="false">Problem statement</h2><div class="placeholder" contenteditable="false">Add the complete use case problem statement here. Include the business context, challenge to solve, boundaries and success criteria.</div><h2 style="margin-top:26px">Mission resources</h2><div class="resource"><div><strong>Dataset</strong><div class="sub" style="margin:3px 0">Add an approved dataset link or download.</div></div><button class="btn">Open</button></div><div class="resource"><div><strong>Supporting document</strong><div class="sub" style="margin:3px 0">Add background reading, process maps or reference files.</div></div><button class="btn">Open</button></div><div class="resource"><div><strong>AI tool guide</strong><div class="sub" style="margin:3px 0">Add approved tool guidance and usage considerations.</div></div><button class="btn">Open</button></div></div>
+<aside><div class="card"><span class="tag">CLUE MASTER</span><h3 contenteditable="false">Name / role placeholder</h3><div class="placeholder" style="margin:12px 0">Photo placeholder</div><p contenteditable="false">Add Clue Master description and office hours.</p><button class="btn primary" onclick="openModal('clueModal')">Request a clue</button></div></aside></div></section>
+<section class="section"><h2>Your three clue requests</h2><p class="sub">Use these for Hint Cards, AI Prompt Suggestions or Additional Context.</p><div class="clues">${[1, 2, 3].map(i => `<div class="clue"><strong>Clue ${i}</strong><p>Available</p><button class="btn" onclick="useClue(this)">Request</button></div>`).join('')}</div></section>
+<section class="section"><h2>Team progress</h2><div class="progresswrap"><div><div class="track"><div class="fill"></div></div><div class="sub" style="margin:9px 0 0">Update the phase as your team advances.</div></div><select onchange="setProgress(this)" style="background:#081117;color:white;border:1px solid var(--line);padding:10px;border-radius:7px"><option value="20">Entered Mission</option><option value="40">Investigation Phase</option><option value="60">Build Phase</option><option value="80">Reached Innovation Vault</option><option value="100">Escape Completed</option></select></div></section>`}
+        chamberData.forEach(x => document.getElementById('chamber-' + x[0]).innerHTML = chamberTemplate(...x));
+        function go(id) { document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === id)); document.querySelectorAll('[data-page]').forEach(b => b.classList.toggle('active', b.dataset.page === id)); window.scrollTo({ top: 0, behavior: 'smooth' }); location.hash = id }
+        document.querySelectorAll('[data-page]').forEach(b => b.onclick = () => go(b.dataset.page));
+        function scrollToId(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }) }
+        function openModal(id) { document.getElementById(id).classList.add('open') } function closeModal(id) { document.getElementById(id).classList.remove('open') }
+        function mockSubmit(msg) { document.querySelectorAll('.modal').forEach(m => m.classList.remove('open')); showToast(msg) }
+        function showToast(msg) { let t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
+        function useClue(btn) { let c = btn.closest('.clue'); if (c.classList.contains('used')) return; c.classList.add('used'); c.querySelector('p').textContent = 'Used'; btn.textContent = 'Requested'; openModal('clueModal') }
+        function setProgress(s) { let section = s.closest('.section'); section.querySelector('.fill').style.width = s.value + '%'; showToast('Progress updated: ' + s.options[s.selectedIndex].text) }
+        let edit = false; const editBtn = document.getElementById('editBtn'); editBtn.onclick = () => { edit = !edit; editBtn.classList.toggle('on', edit); editBtn.textContent = edit ? 'Finish editing' : 'Edit mode'; document.getElementById('editNote').classList.toggle('show', edit); document.querySelectorAll('[contenteditable]').forEach(x => x.contentEditable = edit); if (!edit) saveEdits() };
+        function saveEdits() { const data = [...document.querySelectorAll('[contenteditable]')].map(x => x.innerHTML); localStorage.setItem('escapePortalEdits', JSON.stringify(data)); showToast('Edits saved in this browser') }
+        function loadEdits() { try { let d = JSON.parse(localStorage.getItem('escapePortalEdits')); if (d) [...document.querySelectorAll('[contenteditable]')].forEach((x, i) => { if (d[i] != null) x.innerHTML = d[i] }) } catch (e) { } }
+        window.addEventListener('beforeunload', () => { if (edit) saveEdits() }); loadEdits(); if (location.hash && document.getElementById(location.hash.slice(1))) go(location.hash.slice(1));
+    </script>
+</body>
+
+</html>
